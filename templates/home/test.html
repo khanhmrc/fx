@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Latest Live Stream</title>
+  <!-- Thêm Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Thêm CSS tùy chỉnh -->
+  <style>
+    .embed-responsive {
+      height: 0;
+      overflow: hidden;
+      padding-bottom: 56.25%;
+      position: relative;
+    }
+
+    .embed-responsive iframe {
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mt-4">Latest Live Stream</h1>
+    <div class="embed-responsive embed-responsive-16by9" id="player"></div>
+  </div>
+
+  <!-- Thêm Bootstrap JS và script để nhúng video -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    // Function để nhúng video live stream mới nhất và tự động phát
+    function embedLatestLiveStream(channelId) {
+      // Tạo URL nhúng video với tham số autoplay=1
+      var embedUrl = 'https://www.youtube.com/embed/live_stream?channel=' + channelId + '&autoplay=1&mute=0';
+
+      // Tạo thẻ iframe và nhúng video vào
+      var iframe = document.createElement('iframe');
+      iframe.classList.add('embed-responsive-item');
+      iframe.src = embedUrl;
+      iframe.allowfullscreen = true;
+
+      // Lấy phần tử cha để thêm thẻ iframe vào
+      var player = document.getElementById('player');
+      player.appendChild(iframe);
+    }
+
+    // Gọi function để nhúng video live stream mới nhất từ kênh YouTube và tự động phát
+    embedLatestLiveStream('UCqYlg3lisUct9NvN5_K7dSw');
+  </script>
+</body>
+</html>

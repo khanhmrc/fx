@@ -1,0 +1,191 @@
+{% extends 'home/base.html' %}
+{% load static %}  
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!--PreLoader-->
+<!--
+<div class="loader">
+  <div class="loader-inner">
+    <div class="circle"></div>
+  </div>
+</div>
+-->
+<!--PreLoader Ends-->
+
+    <!-- search area -->
+    <div class="search-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <span class="close-btn"><i class="fas fa-window-close"></i></span>
+            <div class="search-bar">
+              <div class="search-bar-tablecell">
+                <h3>Search For:</h3>
+                <input type="text" placeholder="Keywords" />
+                <button type="submit">
+                  Search <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end search area -->
+
+    <!-- hero area -->
+    <div class="hero-area hero-bg">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-9 offset-lg-2 text-center">
+            <div class="hero-text">
+              <div class="hero-text-tablecell">
+                <p class="subtitle">Fx Trade</p>
+                <h1 style="font-size: 40px;">For All Time. Always.</h1>
+                <div class="hero-btns">
+                  <a href="https://t.me/tradingbotz" class="boxed-btn">Join Now</a>
+                  <a href="{% url 'contact' %}" class="bordered-btn">Contact Us</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end hero area -->
+    <div class="list-section pt-80 pb-80">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+            <div class="list-box d-flex align-items-center">
+              <div class="list-icon">
+                <i class="fas fa-shipping-fast"></i>
+              </div>
+              <div class="content">
+                <h3>Always Ready</h3>
+                <p>When you have money</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+            <div class="list-box d-flex align-items-center">
+              <div class="list-icon">
+                <i class="fas fa-phone-volume"></i>
+              </div>
+              <div class="content">
+                <h3>24/7 Support</h3>
+                <p>For All Time. Always</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div
+              class="list-box d-flex justify-content-start align-items-center"
+            >
+              <div class="list-icon">
+                <i class="fas fa-sync"></i>
+              </div>
+              <div class="content">
+                <h3>Refund</h3>
+                <p>$1 if You Lose</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- product section -->
+    <div>
+      <div>
+        <label for="chartType">Chart Type:</label>
+        <select id="chartType">
+          <option value="line">Line Chart</option>
+          <option value="bar">Bar Chart</option>
+          <option value="radar">Radar Chart</option>
+          <option value="pie">Pie Chart</option>
+        </select>
+        <button onclick="updateChart()">Update Chart</button>
+      </div>
+      <canvas id="profitChart"></canvas>
+    </div>
+
+    <script>
+      // Lấy dữ liệu từ context được truyền vào từ view Django
+      var trades = {{ trades }};
+      var amounts = {{ amounts }};
+
+      // Tạo biểu đồ mặc định sử dụng Chart.js
+      var ctx = document.getElementById('profitChart').getContext('2d');
+      var profitChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: trades,
+              datasets: [{
+                  label: 'Profit',
+                  data: amounts,
+                  backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                  borderColor: 'rgba(0, 123, 255, 1)',
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  x: {
+                      display: true,
+                      title: {
+                          display: true,
+                          text: 'Trade'
+                      }
+                  },
+                  y: {
+                      display: true,
+                      title: {
+                          display: true,
+                          text: 'Profit'
+                      }
+                  }
+              }
+          }
+      });
+
+      // Hàm cập nhật biểu đồ khi có sự thay đổi loại biểu đồ
+      function updateChart() {
+          var selectedChartType = document.getElementById('chartType').value;
+          profitChart.destroy(); // Xóa biểu đồ hiện tại
+          profitChart = new Chart(ctx, {
+              type: selectedChartType,
+              data: {
+                  labels: trades,
+                  datasets: [{
+                      label: 'Profit',
+                      data: amounts,
+                      backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                      borderColor: 'rgba(0, 123, 255, 1)',
+                      borderWidth: 1
+                  }]
+              },
+              options: {
+                  scales: {
+                      x: {
+                          display: true,
+                          title: {
+                              display: true,
+                              text: 'Trade'
+                          }
+                      },
+                      y: {
+                          display: true,
+                          title: {
+                              display: true,
+                              text: 'Profit'
+                          }
+                      }
+                  }
+              }
+          });
+      }
+    </script>
+
+{% endblock %}
+
