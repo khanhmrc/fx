@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- favicon -->
+  <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"  crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    html, body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    #chart-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .mode-toggle-button {
+      position: absolute;
+      top: 10px;
+      right: 40px;
+      z-index: 1;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .mode-toggle-button i {
+      transition: color 0.3s ease-in-out;
+    }
+
+    .mode-toggle-button.light-mode i {
+      color: #fff;
+    }
+
+    .mode-toggle-button.dark-mode i {
+      color: #000;
+    }
+  </style>
+  <title>Chart Viewer</title>
+</head>
+<body>
+  <div id="chart-container">
+    <button id="mode-toggle" class="mode-toggle-button">
+      <i id="mode-icon" class="fas fa-sun"></i>
+    </button>
+
+    <!-- TradingView Widget BEGIN -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script type="text/javascript">
+      function toggleMode() {
+        var currentTheme = localStorage.getItem('theme');
+        var newTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+        localStorage.setItem('theme', newTheme);
+        updateModeIcon(newTheme);
+        window.location.reload();
+      }
+
+      function updateModeIcon(theme) {
+        var modeIcon = document.getElementById('mode-icon');
+        var modeButton = document.getElementById('mode-toggle');
+        if (theme === 'dark') {
+          modeIcon.classList.remove('fa-sun');
+          modeIcon.classList.add('fa-moon');
+          modeButton.classList.remove('light-mode');
+          modeButton.classList.add('light-mode');
+        } else {
+          modeIcon.classList.remove('fa-moon');
+          modeIcon.classList.add('fa-sun');
+          modeButton.classList.remove('dark-mode');
+          modeButton.classList.add('dark-mode');
+        }
+      }
+
+      document.getElementById('mode-toggle').addEventListener('click', toggleMode);
+
+      updateModeIcon(localStorage.getItem('theme'));
+
+      new TradingView.widget({
+        "autosize": true,
+        "symbol": "BITSTAMP:BTCUSD",
+        "interval": "15",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "theme": (localStorage.getItem('theme') === 'dark') ? 'Dark' : 'Light',
+        "style": "1",
+        "locale": "en",
+        "toolbar_bg": "#f1f3f6",
+        "enable_publishing": false,
+        "allow_symbol_change": true,
+        "hideideas": true,
+        "withdateranges": false,
+        "hide_top_toolbar": false,
+        "hide_side_toolbar": false,
+        "overrides": {
+          "paneProperties.background": (localStorage.getItem('theme') === 'dark') ? '#1f1f1f' : '#ffffff',
+          "paneProperties.vertGridProperties.color": (localStorage.getItem('theme') === 'dark') ? '#292b2f' : '#e9e9ea',
+          "paneProperties.horzGridProperties.color": (localStorage.getItem('theme') === 'dark') ? '#292b2f' : '#e9e9ea',
+          "scalesProperties.lineColor": '#787b86',
+          "scalesProperties.textColor": '#787b86',
+          "mainSeriesProperties.candleStyle.upColor": '#00c176',
+          "mainSeriesProperties.candleStyle.downColor": '#ff3b30',
+          "mainSeriesProperties.candleStyle.borderUpColor": '#00c176',
+          "mainSeriesProperties.candleStyle.borderDownColor": '#ff3b30',
+          "mainSeriesProperties.candleStyle.wickUpColor": '#737375',
+          "mainSeriesProperties.candleStyle.wickDownColor": '#737375',
+          "symbolWatermarkProperties.transparency": 90,
+          "scalesProperties.showLeftScale": true,
+          "scalesProperties.showRightScale": true,
+          "symbolWatermarkProperties.color": "rgba(0, 0, 0, 0)",
+          "volumePaneSize": "medium",
+          "mainSeriesProperties.style": 1
+        },
+       "symbols": [
+          {
+            "title": "Light",
+            "icon": "fas fa-sun",
+            "theme": "Light"
+          },
+          {
+            "title": "Dark",
+            "icon": "fas fa-moon",
+            "theme": "Dark"
+          }
+        ],
+        "customFormatters": {
+          "buttonFormatter": {
+            "titleFormatter": function(context) {
+              return context.title;
+            }
+          }
+        },
+        "drawings_access": {
+          "type": "black",
+          "tools": [
+            {"name": "Regression Trend"}
+          ]
+        }
+      });
+    </script>
+    <!-- TradingView Widget END -->
+  </div>
+</body>
+</html>

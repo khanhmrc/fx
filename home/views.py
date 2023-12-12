@@ -37,6 +37,10 @@ def test(request):
     context={
     }
     return render(request,'home/test.html',context)
+def tradingview(request):
+    context={
+    }
+    return render(request,'home/tradingview.html',context)
 def contact(request):
     context={
     }

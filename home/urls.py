@@ -9,5 +9,6 @@ urlpatterns=[
     path('test',views.test,name='test'),
     path('live',views.live,name='live'),
     path('contact',views.contact,name='contact'),
+    path('chartviewer',views.tradingview,name='tradingview'),
     path('404',views.err404,name='404'),
 ]
